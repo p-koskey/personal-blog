@@ -1,0 +1,21 @@
+{% block styles%}
+        <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
+ {% endblock %}
+ {% block content %}
+ {{ fontawesome_html() }}
+<div class="sidenav">
+    <div class="text">
+    
+    <h2 class="font-weight-bolder">TECH BLOG</h2>
+    <hr>
+    <hr>
+    <div class="links">
+    <a href="#"><i class="fa fa-home" aria-hidden="true"></i>  Blog Home</a>
+    <a href="#"><i class="fas fa-bookmark" aria-hidden="true"></i>  Blog Posts</a>
+    <a href="{{url_for('auth.login')}}"><i class="fa fa-sign-in-alt" aria-hidden="true"></i>  Sign in</a>
+    <!-- <a href="#">Social media</a> -->
+</div>
+</div>
+  </div>
+
+  {% endblock content %}
