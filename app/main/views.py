@@ -108,7 +108,7 @@ def update_post(post_id):
     title = 'Edit Post'
     return render_template('newpost.html',title = title, post_form=form,action="Edit", )
   
-@main.route('/user/<uname>/postes')
+@main.route('/user/<uname>/posts')
 @login_required
 def view_my_posts(uname):
     user = User.query.filter_by(username=uname).first()

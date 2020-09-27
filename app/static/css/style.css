@@ -2,16 +2,10 @@ body{
    background-color: #f2fdff;
 }
 /* The sidebar menu */
-.sidenav {
-    height: 100%; /* Full-height: remove this if you want "auto" height */
-    width: 250px; /* Set the width of the sidebar */
-    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-    z-index: 1; /* Stay on top */
-    top: 0; /* Stay at the top */
-    left: 0;
+.navbar{
+    
     background-color: #489FB5; 
-    overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 20px;
+    
    
   }
 
@@ -21,11 +15,14 @@ body{
     padding: 6px 8px 6px 16px;
     
   }
+
+ .navbar-toggler{
+  color: #101935;
+  }
   
   /* The navigation menu links */
-  .sidenav a{
+  a.nav-link{
     color: #fff;
-    margin-top: 20px;
     text-decoration: none;
     font-size: 20px;    
     display: block;
@@ -33,24 +30,17 @@ body{
     font-weight: bolder;
   }
 
-  .sidenav a:active {
+  a.nav-link:active {
     color: #101935;
   }
   
   /* When you mouse over the navigation links, change their color */
-  .sidenav a:hover {
+  a.nav-link:hover {
     color: #FFA62B;
   }
 
  
   /* Style page content */
-.main {
-    margin-left: 250px; /* Same as the width of the sidebar */
-    padding: 0px 10px;
-    color: #101935;
-   
-   
-  }
 
  #submit{
     background-color: #FFA62B; 
@@ -66,6 +56,10 @@ body{
     display: inline-block;
     
 }
+a:hover {
+  text-decoration: none;
+}
+
 
   
  
@@ -74,5 +68,3 @@ body{
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px;}
   }
-  
-  

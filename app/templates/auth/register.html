@@ -4,10 +4,9 @@
 {% block content %}
 {{ fontawesome_html() }}
 <div class="container mt-3 main">
-    <h1 class="text-center"><i class="fa fa-user-edit"></i>  Sign up to Pitches</h1>
-<div class="row mt-3">
-<div class="col-md-2"> </div>
-<div class="col-md-8 login ">
+    <h1 class="text-center"><i class="fa fa-user-edit"></i>Become a writer:</h1>
+
+<div class="col-md-8 col-sm-4 login ">
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
           {% for category, message in messages %}
@@ -19,8 +18,8 @@
 {{wtf.quick_form(registration_form)}}
 
 </div>
-<div class="col-md-2"></div>
+
 </div>
-</div>
+
 
 {% endblock%}
