@@ -141,6 +141,15 @@ def view_post(post_id):
         comments = Comments.get_comments(post_id)
     return render_template('post.html', post=post, comments=comments, post_id=post.id, comment_form = comment_form, user_form=user_form)
 
+@main.route('/post/<int:comment_id>/delete')
+@login_required
+def delete_comment(comment_id):
+    
+    comment = Comments.query.filter_by(id=comment_id).first_or_404()
+    db.session.delete(comment)
+    db.session.commit()
+    #flash('Page was deleted successfully', 'success')
+    return redirect(request.referrer)
 
 
     
