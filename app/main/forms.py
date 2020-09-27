@@ -27,5 +27,5 @@ class CommentForm2(FlaskForm):
 
 class SubscribeForm(FlaskForm):
   
-    email = StringField('Enter your Email Address:',validators=[Required(),Email()])
+    email = StringField(render_kw={"placeholder": "Enter your email address"},validators=[Required(),Email()])
     submit = SubmitField('Subscribe')

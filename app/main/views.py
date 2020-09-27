@@ -6,11 +6,14 @@ from flask_login import login_required,current_user
 from .. import db,photos
 from flask_mail import Message
 from .. import mail
+from ..requests import get_quotes
 
 @main.route('/', methods = ['GET','POST'])
 def index():
     posts = Post.get_all_posts()
+    quote = get_quotes()
     subscribe_form = SubscribeForm()
+
     if subscribe_form.validate_on_submit():
         semail = subscribe_form.email.data
         new_email = Subscribers(semail = email)
@@ -22,7 +25,7 @@ def index():
         mail.send(msg)
         flash("Subscribed sucessfully")
    
-    return render_template('index.html', subscribe_form=subscribe_form, posts=posts)
+    return render_template('index.html', subscribe_form=subscribe_form, posts=posts, quote =quote)
 
 @main.route('/user/<uname>')
 def profile(uname):

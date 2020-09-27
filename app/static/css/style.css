@@ -33,14 +33,14 @@ body{
     font-weight: bolder;
   }
 
-  /* .sidenav a:acs {
+  .sidenav a:active {
     color: #101935;
-  } */
+  }
   
   /* When you mouse over the navigation links, change their color */
-  /* .sidenav a:hover {
-    color: #101935;
-  } */
+  .sidenav a:hover {
+    color: #FFA62B;
+  }
 
  
   /* Style page content */
@@ -53,9 +53,9 @@ body{
   }
 
  #submit{
-    background-color: #16697A; 
-    color: #fff;
-    border-color: #16697A;
+    background-color: #FFA62B; 
+    color: #16697A;
+    border-color:#FFA62B ;
   }
 
 .login {
@@ -66,7 +66,6 @@ body{
     display: inline-block;
     
 }
-
 
   
  
