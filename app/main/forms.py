@@ -3,7 +3,7 @@ from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField,  BooleanField, TextAreaField,RadioField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError,Required
-from app.models import User, Post
+from app.models import User, Post, Comments, Subscribers
 
 class PostForm(FlaskForm):
     post_title = StringField('Title', validators = [Required()])
@@ -23,3 +23,9 @@ class CommentForm2(FlaskForm):
     name = StringField('Enter your name:',validators = [Required()])
     description = TextAreaField('Add a comment:', validators = [Required()])
     submit = SubmitField('Submit')
+
+
+class SubscribeForm(FlaskForm):
+  
+    email = StringField('Enter your Email Address:',validators=[Required(),Email()])
+    submit = SubmitField('Subscribe')

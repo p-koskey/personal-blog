@@ -98,3 +98,13 @@ class Comments(db.Model):
     def get_comments(cls, post):
         comments = Comments.query.filter_by(post_id=post).all()
         return comments
+
+class Subscribers(db.Model):
+    __tablename__ = 'subscribers'
+
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(255),unique = True,index = True)
+
+    def save_email(self):
+        db.session.add(self)
+        db.session.commit()

@@ -1,14 +1,28 @@
 from flask import render_template,request,redirect,url_for,abort,flash
-from ..models import User,Post,Comments
+from ..models import User,Post,Comments, Subscribers
 from . import main
-from .forms import PostForm, UpdateProfile,CommentForm, CommentForm2
+from .forms import PostForm, UpdateProfile,CommentForm, CommentForm2,SubscribeForm
 from flask_login import login_required,current_user
 from .. import db,photos
-@main.route('/')
+from flask_mail import Message
+from .. import mail
+
+@main.route('/', methods = ['GET','POST'])
 def index():
     posts = Post.get_all_posts()
+    subscribe_form = SubscribeForm()
+    if subscribe_form.validate_on_submit():
+        semail = subscribe_form.email.data
+        new_email = Subscribers(semail = email)
+
+        new_email.save_email()
+
+        msg = Message(subject="Tech Blog Subscriber", sender="testingemailpk6@gmail.com", recipients=[semail])
+        msg.body = f"Hello, Thank you for subscribing to Tech blog, welcome to the family. You will be notified of new emails Please enjoy."
+        mail.send(msg)
+        flash("Subscribed sucessfully")
    
-    return render_template('index.html' ,posts = posts)
+    return render_template('index.html', subscribe_form=subscribe_form, posts=posts)
 
 @main.route('/user/<uname>')
 def profile(uname):
@@ -123,3 +137,8 @@ def view_post(post_id):
 
         comments = Comments.get_comments(post_id)
     return render_template('post.html', post=post, comments=comments, post_id=post.id, comment_form = comment_form, user_form=user_form)
+
+
+
+    
+    
