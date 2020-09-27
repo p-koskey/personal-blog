@@ -3,19 +3,21 @@
  {% endblock %}
  {% block content %}
  {{ fontawesome_html() }}
+
 <div class="sidenav">
     <div class="text">
     
     <h2 href="/" class="font-weight-bolder">TECH BLOG</h2>
     <hr>
-    <hr>
+   
     <div class="links">
         {% if current_user.is_authenticated %}
-    <a href="#"><i class="fa fa-home" aria-hidden="true"></i>  Create a new Post</a>
-    <a href="#"><i class="fas fa-bookmark" aria-hidden="true"></i> View Blog Posts</a>
+    <a href="{{url_for('main.profile',uname=current_user.username)}}"><i class="fas fa-bookmark" aria-hidden="true"></i> Edit Profile</a>
+    <a href="{{url_for('main.new_post')}}"><i class="fa fa-home" aria-hidden="true"></i>  Create a new Post</a>
+    <a href="{{url_for('main.view_my_posts',uname=current_user.username)}}"><i class="fas fa-bookmark" aria-hidden="true"></i> View Blog Posts</a>
     <a href="{{url_for('auth.logout')}}"><i class="fa fa-sign-out-alt" aria-hidden="true"></i>  Sign out</a>
     {% else %}
-    <a href="#"><i class="fa fa-home" aria-hidden="true"></i>  Blog Home</a>
+    <a href="/"><i class="fa fa-home" aria-hidden="true"></i>  Blog Home</a>
     <a href="#"><i class="fas fa-bookmark" aria-hidden="true"></i>  Blog Posts</a>
     <a href="{{url_for('auth.login')}}"><i class="fa fa-sign-in-alt" aria-hidden="true"></i>  Sign in</a>
     <!-- <a href="#">Social media</a> -->
@@ -23,5 +25,6 @@
 </div>
 </div>
   </div>
+  
 
   {% endblock content %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block content %}
+<div class="container mt-5 "> 
+  <div class="row ">
+    <div class= "col mt-5"> 
+      <h1 class="text-center">Update Profile </h1>
+      
+      <form class="form" action="" method="post" enctype = "multipart/form-data">
+        <p>Choose profile picture:   </p> 
+        
+        <input type="file"  name="photo" class="form-control" required> <br>
+        {{wtf.quick_form(form)}}
+      </form>
+        
+     <br>
+  
+</div>
+</div>
+</div>
+
+{% endblock %}

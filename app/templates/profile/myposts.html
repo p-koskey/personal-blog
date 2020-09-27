@@ -1,0 +1,37 @@
+{% extends 'base.html'%}
+
+{% block content %}
+{{ fontawesome_html() }}
+<div class="main container">
+<h1 class="text-center mt-3">My Posts</h1>
+<div class="d-flex mt-3 flex-wrap justify-content-center">
+    {% for post in posts %}      
+        <div class="card col-md-8 mt-3 rounded">
+          <div class="card-body">
+            {% if post.user.profile_pic_path %}
+
+<img src="{{url_for('static',filename=post.user.profile_pic_path)}}" alt="" class="img-thumbnail float-left mr-2" style="width:40px; height: 40px; border-radius:100%;">
+
+{%else%}
+<i class="fa fa-user img-thumbnail float-left mr-2" style="width:40px; height: 40px; border-radius:100%;"></i>
+
+{% endif %}
+<h6 style="color: grey; ">   {{post.user.username|capitalize}} </h6>
+<h6 style="color: grey; ">   {{post.posted.strftime('%d %B, %Y')}}</h6>
+            <h4 class="card-title font-weight-900 text-center" style="color: #101935;">{{post.title|upper}}</h4>
+            <h6 class="card-title font-weight-bolder text-center" style="color: #53595a;">{{post.content|truncate}}</h6>
+            {% if current_user.is_authenticated %}
+    <a href="{{ url_for('main.delete_post', post_id=post.id) }}"><i class="fa fa-trash-alt" style="color:red;"></i></a>
+    <a href="{{ url_for('main.update_post', post_id=post.id) }}"><i class="fa fa-edit" style="color: #16697A;"></i></a>
+  {% endif %}
+          </div> 
+          <a href="{{ url_for('main.delete_post', post_id=post.id) }}"><i class="fa fa-comments " style="color: #16697A;"> Edit comments</a></i>
+          
+</div>
+      
+
+    
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}

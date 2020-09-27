@@ -1,0 +1,25 @@
+{% extends 'base.html'%} 
+{% import "bootstrap/wtf.html" as wtf %} 
+{% block content %}
+{{ fontawesome_html() }}
+
+
+<div class="container mt-5 main "> 
+  <h1 class="text-center mt-2">{{ action }} {{ data_type }}</h1>
+    <div class="row rounded p-2">
+      <div class= "col-md-2"> </div>
+      <div class="col-md-8">
+        {% block form %}
+
+
+<form action="{{ form_action }}" method="{{ method | d("POST") }}">
+  {{ wtf.quick_form(post_form) }}
+</form>
+
+{% endblock form %}
+</div>
+</div> 
+</div>
+
+
+{% endblock %}
