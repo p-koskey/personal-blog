@@ -16,30 +16,22 @@
            
           </div> 
           <div class="r">
-            <h4 class="text-center"><i class="fa fa-comments"></i>  Leave a comment below:</h4>
+            <h4 class="text-center"><i class="fa fa-comments"></i>  Delete comments:</h4>
             {% for comment in comments %}
             
             <ul class="list-group">
                 <li class="list-group-item list-group-item-info">{{comment.comments|capitalize}}</li>
               <footer class="blockquote-footer">Posted on: <cite title="Source Title">{{comment.posted.strftime('%Y-%m-%d')}}</cite></footer>
               <footer class="blockquote-footer">By : {{comment.name|capitalize}} </footer>
-              
+              {% if current_user.is_authenticated %}
+               
+              <a href="{{ url_for('main.delete_comment', comment_id=comment.id) }}"><i class="fa fa-trash-alt" style="color:red;"></i></a>
+
+            {% endif %}
             </ul>            
     
               {% endfor %}
             </div>
-            {% if current_user.is_authenticated %}
-            <div class="container">
-        {{ wtf.quick_form(comment_form) }}
-        
-            {% else %}
-            
-            <div class="container">
-                
-                {{ wtf.quick_form(user_form) }}
-            
-            </div>
-            {%endif%}
           
 </div>
 

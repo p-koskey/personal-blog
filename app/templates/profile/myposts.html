@@ -25,7 +25,17 @@
     <a href="{{ url_for('main.update_post', post_id=post.id) }}"><i class="fa fa-edit" style="color: #16697A;"></i></a>
   {% endif %}
           </div> 
-          <a href="{{ url_for('main.view_post', post_id=post.id) }}"><i class="fa fa-comments " style="color: #16697A;"> Edit comments</a></i>
+          {% for comment in comments %}
+            
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-info">{{comment.comments|capitalize}}</li>
+              <footer class="blockquote-footer">Posted on: <cite title="Source Title">{{comment.posted.strftime('%Y-%m-%d')}}</cite></footer>
+              <footer class="blockquote-footer">By : {{comment.name|capitalize}} </footer>
+              
+            </ul>            
+    
+              {% endfor %}
+          <a href="{{ url_for('main.edit_post', post_id=post.id) }}"><i class="fa fa-comments " style="color: #16697A;"> Edit comments</a></i>
           
 </div>
       

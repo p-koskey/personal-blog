@@ -11,7 +11,7 @@
   <h1 class="text-center mt-5"><i class="fa fa-user-edit"></i>   Sign in Here</h1>
     <div class="row mt-3">
       <div class= "col-md-2"> </div>
-      <div class="col-md-8 login">
+      <div class="col-md-8 login m-2">
       <!--Flash message -->
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -24,7 +24,7 @@
       
       {{wtf.quick_form(login_form)}}
       <br>
-      <p> Don't have an account? <a href="{{url_for('auth.register')}}" style="color: #16697A;">Sign up here</a></p>
+      <p> Don't have an account? <a href="{{url_for('auth.register')}}" style="color: #16697A;">Become a writer</a></p>
      </div>
      <div clas="col-md-2"> </div>
     </div>

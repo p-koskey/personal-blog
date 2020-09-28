@@ -16,8 +16,10 @@ body{
     
   }
 
- .navbar-toggler{
+ .navbar-toggler-icon{
   color: #101935;
+  height: auto;
+  width: auto;
   }
   
   /* The navigation menu links */
@@ -42,17 +44,19 @@ body{
  
   /* Style page content */
 
- #submit{
+ .btn{
     background-color: #FFA62B; 
     color: #16697A;
     border-color:#FFA62B ;
+    width:40%;
+    margin: 0 auto;
   }
 
 .login {
     border: 1px solid #489FB5;
     border-radius: 5px;
     padding: 20px;
-    background-color: #f2fdff;
+    background-color: #fff;
     display: inline-block;
     
 }
@@ -60,6 +64,19 @@ a:hover {
   text-decoration: none;
 }
 
+.subscribe label{
+  display: none;
+}
+.subscribe form{
+  display: flex;
+  
+}
+.subscribe form .btn{
+  padding: 0px 5px;
+    margin: 0px 5px;
+    height: 35px;
+  width: auto;
+}
 
   
  

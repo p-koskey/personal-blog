@@ -7,12 +7,14 @@ from .. import db,photos
 from flask_mail import Message
 from .. import mail
 from ..requests import get_quotes
+from sqlalchemy import asc,desc
 
 @main.route('/', methods = ['GET','POST'])
 def index():
     posts = Post.get_all_posts()
     quote = get_quotes()
     subscribe_form = SubscribeForm()
+    recent = Post.query.order_by(desc(Post.posted)).limit(3).all()
 
     if subscribe_form.validate_on_submit():
         semail = subscribe_form.email.data
@@ -25,7 +27,7 @@ def index():
         mail.send(msg)
         flash("Subscribed sucessfully")
    
-    return render_template('index.html', subscribe_form=subscribe_form, posts=posts, quote =quote)
+    return render_template('index.html', subscribe_form=subscribe_form, posts=posts, quote =quote, recent=recent)
 
 @main.route('/user/<uname>')
 def profile(uname):
@@ -62,7 +64,6 @@ def update_profile(uname):
     return render_template('profile/update.html',form =form)
 
 
-
 @main.route('/post/new/', methods = ['GET','POST'])
 @login_required
 def new_post():
@@ -94,30 +95,38 @@ def delete_post(post_id):
 @main.route('/post/update/<int:post_id>/',methods=['GET', 'POST'])
 @login_required
 def update_post(post_id):
-    post = Post.query.filter_by(id=post_id).first_or_404()
-    if post:
-        form = PostForm(formdata=request.form, obj=post)
-        if request.method == 'POST' and form.validate_on_submit():
-            post_title = form.post_title.data
-            post_content = form.post_content.data
-        
-            db.session.commit()
-            #flash('Post updated successfully!')
-            return redirect(url_for('.index' ))
-        
-    title = 'Edit Post'
-    return render_template('newpost.html',title = title, post_form=form,action="Edit", )
+    post = Post.query.filter_by(id=post_id).first()
+    form =PostForm()
+    if form.validate_on_submit():
+        post.title = form.post_title.data
+        post.content = form.post_content.data
+        db.session.commit()
+        flash('Post updated successfully!')
+        return redirect (url_for('.index') )
+
+    else:
+        title = 'Edit Post'
+        return render_template('newpost.html',title = title, post = post, post_form=form,action="Edit" )
   
 @main.route('/user/<uname>/posts')
 @login_required
 def view_my_posts(uname):
     user = User.query.filter_by(username=uname).first()
     posts = Post.query.filter_by(user_id = user.id).all()    
-
+    
     return render_template("profile/myposts.html", user=user,posts=posts)
+
+@main.route('/post/edit/<post_id>', methods=['GET'])
+def edit_post(post_id):
+    comment_form = CommentForm()
+    user_form = CommentForm2()
+    post = Post.query.filter_by(id=post_id).first()
+    user = User.query.filter_by(id=post.user_id)
+    comments = Comments.get_comments(post_id)
+    return render_template('profile/editpost.html', post=post, comments=comments, post_id=post.id, comment_form = comment_form, user_form=user_form, user =user)
  
-@main.route('/post/view/<post_id>', methods=['GET', 'POST'])
-def view_post(post_id):
+@main.route('/post/view/<post_id>', methods=['POST'])
+def post_comment(post_id):
    
 
     post = Post.query.filter_by(id=post_id).first()
@@ -125,7 +134,8 @@ def view_post(post_id):
     comments = Comments.get_comments(post_id)
     comment_form = CommentForm()
     user_form = CommentForm2()
-    if comment_form.validate_on_submit() or user_form.validate_on_submit() :
+
+    if comment_form.validate_on_submit() or user_form.validate_on_submit():
         if current_user.is_authenticated:
             name = current_user.username        
             comment = comment_form.description.data
@@ -136,10 +146,17 @@ def view_post(post_id):
         new_comment = Comments( name = name , comments=comment, post_id = post_id)
 
         new_comment.save_comment()
-          
 
-        comments = Comments.get_comments(post_id)
-    return render_template('post.html', post=post, comments=comments, post_id=post.id, comment_form = comment_form, user_form=user_form)
+        return redirect(request.referrer)
+
+@main.route('/post/view/<post_id>', methods=['GET'])
+def view_post(post_id):
+    comment_form = CommentForm()
+    user_form = CommentForm2()
+    post = Post.query.filter_by(id=post_id).first()
+    user = User.query.filter_by(id=post.user_id)
+    comments = Comments.get_comments(post_id)
+    return render_template('post.html', post=post, comments=comments, post_id=post.id, comment_form = comment_form, user_form=user_form, user =user)
 
 @main.route('/post/<int:comment_id>/delete')
 @login_required
@@ -148,7 +165,7 @@ def delete_comment(comment_id):
     comment = Comments.query.filter_by(id=comment_id).first_or_404()
     db.session.delete(comment)
     db.session.commit()
-    #flash('Page was deleted successfully', 'success')
+    
     return redirect(request.referrer)
 
 
