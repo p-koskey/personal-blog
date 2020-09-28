@@ -22,11 +22,11 @@
   
       <div class="row">
         <div class="col-md-4 col-lg-2">
-          <h2 class="text-center">Recent Posts</h2>
+          <h2 class="text-center" style="color: #FFA62B;">Recent Posts</h2>
           {% for recent in recent%}
           
           <ul class="list-group">
-            <li class="list-group-item list-group-item list-group-item-action mb-2 text-center"><i class="fa fa-file float-left" style="color: #16697A;">   {{recent.title}}</i> <br><br>
+            <li class="list-group-item list-group-item list-group-item-action mb-2 " style="color: #16697A;"><i class="fa fa-file float-left" style="color: #16697A;"> </i> <br> {{recent.title|capitalize}} <br>
               <h6 style="color: grey; float:right;">   {{recent.posted.strftime('%d %B, %Y')}}</h6>
             </li>
           </ul>
@@ -64,7 +64,7 @@
       </div>
       
     </div>
-    <nav aria-label="Page navigation example" class="float-right" >
+    <nav aria-label="Page navigation example" class="pagination pagination-lg float-right" >
       <ul class="pagination mb-2">
           {% if posts.has_prev %}
             <li class="page-item"> <a class="page-link" href="{{ url_for('main.index', page=posts.prev_num) }}">Previous</a></li>
