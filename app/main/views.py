@@ -9,24 +9,27 @@ from .. import mail
 from ..requests import get_quotes
 from sqlalchemy import asc,desc
 
-@main.route('/', methods = ['GET','POST'])
-def index():
-    posts = Post.get_all_posts()
+@main.route('/', methods = ['GET','POST'],defaults={"page": 1})
+@main.route('/<int:page>', methods=['GET'])
+def index(page):
+    page = page
+    per_page = 3
+    posts = Post.query.order_by(Post.posted.desc()).paginate(page,per_page,error_out=False)
     quote = get_quotes()
     subscribe_form = SubscribeForm()
     recent = Post.query.order_by(desc(Post.posted)).limit(3).all()
 
     if subscribe_form.validate_on_submit():
         semail = subscribe_form.email.data
-        new_email = Subscribers(semail = email)
+        new_email = Subscribers(email = semail)
 
         new_email.save_email()
 
         msg = Message(subject="Tech Blog Subscriber", sender="testingemailpk6@gmail.com", recipients=[semail])
-        msg.body = f"Hello, Thank you for subscribing to Tech blog, welcome to the family. You will be notified of new emails Please enjoy."
+        msg.body = f"Hello, Thank you for subscribing to Tech blog, welcome to the family. You will be notified of new posts on the site. Please enjoy."
         mail.send(msg)
         flash("Subscribed sucessfully")
-   
+        return redirect(request.referrer)
     return render_template('index.html', subscribe_form=subscribe_form, posts=posts, quote =quote, recent=recent)
 
 @main.route('/user/<uname>')
@@ -67,8 +70,11 @@ def update_profile(uname):
 @main.route('/post/new/', methods = ['GET','POST'])
 @login_required
 def new_post():
+    sub = Subscribers.query.all()
     form = PostForm()
-
+    emails = [s.email for s in sub]
+    for s in sub:
+        emails.append(s.email)
     if form.validate_on_submit():
         post_title = form.post_title.data
         post_content = form.post_content.data
@@ -78,6 +84,11 @@ def new_post():
 
         # save review method
         new_post.save_post()
+
+        msg = Message(subject="New Post Alert", sender="testingemailpk6@gmail.com", recipients=emails)
+        msg.body = f"Hello, Check out this new post - " + post_title 
+        mail.send(msg)
+        flash("Subscribed sucessfully")
         return redirect(url_for('.index' ))
 
     title = 'New Post'
@@ -90,7 +101,7 @@ def delete_post(post_id):
     db.session.delete(post)
     db.session.commit()
     #flash('Page was deleted successfully', 'success')
-    return redirect(url_for('main.index'))
+    return redirect(request.referrer)
 
 @main.route('/post/update/<int:post_id>/',methods=['GET', 'POST'])
 @login_required
