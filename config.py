@@ -1,7 +1,7 @@
 import os
 
 class Config:
-
+    POSTS_PER_PAGE = 3
     SECRET_KEY = os.environ.get('SECRET_KEY')
     API_BASE_URL = 'http://quotes.stormconsultancy.co.uk/random.json'
     SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://kaycee:password@localhost/blog'
