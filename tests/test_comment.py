@@ -1,11 +1,13 @@
 import unittest
-from app.models import Comment
+from app.models import Comments
 from app import db
 
 def setUp(self):
         
-        self.new_comment = Comment(name='Leo',comment='Very good')
+        self.new_comment = Comments(name='Leo',comment='Very good')
+        
 def tearDown(self):
+
         Comment.query.delete()
         
 
