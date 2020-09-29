@@ -89,10 +89,11 @@ def new_post():
 
         # save review method
         new_post.save_post()
-
-        msg = Message(subject="New Post Alert", sender="testingemailpk6@gmail.com", recipients=emails)
-        msg.body = f"Hello, Visit the website to check out this new post \n " + post_title.capitalize() + " by " + current_user.username.capitalize()
-        mail.send(msg)
+        if len(emails) > 0:
+            
+            msg = Message(subject="New Post Alert", sender="testingemailpk6@gmail.com", recipients=emails)
+            msg.body = f"Hello, Visit the website to check out this new post \n " + post_title.capitalize() + " by " + current_user.username.capitalize()
+            mail.send(msg)
         
         return redirect(url_for('.index' ))
 
