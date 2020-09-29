@@ -35,6 +35,7 @@ def index(page):
             mail.send(msg)
             flash("Subscribed sucessfully","success")
             return redirect(request.referrer)
+            
     return render_template('index.html', subscribe_form=subscribe_form, posts=posts, quote =quote, recent=recent)
 
 @main.route('/user/<uname>')
@@ -90,7 +91,7 @@ def new_post():
         # save review method
         new_post.save_post()
         if len(emails) > 0:
-            
+
             msg = Message(subject="New Post Alert", sender="testingemailpk6@gmail.com", recipients=emails)
             msg.body = f"Hello, Visit the website to check out this new post \n " + post_title.capitalize() + " by " + current_user.username.capitalize()
             mail.send(msg)
