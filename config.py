@@ -4,7 +4,7 @@ class Config:
     POSTS_PER_PAGE = 3
     SECRET_KEY = os.environ.get('SECRET_KEY')
     API_BASE_URL = 'http://quotes.stormconsultancy.co.uk/random.json'
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://kaycee:password@localhost/blog'
+    
     UPLOADED_PHOTOS_DEST ='app/static/photos'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
@@ -25,9 +25,10 @@ class ProdConfig(Config):
         #SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
 
 class TestConfig(Config):
-  pass
+
+      SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://kaycee:password@localhost/blog_test'
 class DevConfig(Config):
-    pass
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://kaycee:password@localhost/blog'
     DEBUG = True
 
 config_options = {
