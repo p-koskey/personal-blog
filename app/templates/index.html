@@ -15,6 +15,13 @@
     
     <div class="subscribe mt-2 d-flex justify-content-center">
       <div class="">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}"> {{ message|capitalize }} </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
             {{ wtf.quick_form(subscribe_form) }}
           </div>
       </div>
@@ -25,11 +32,11 @@
           <h2 class="text-center" style="color: #FFA62B;">Recent Posts</h2>
           {% for recent in recent%}
           
-          <ul class="list-group">
+          <a href="{{url_for('main.view_post', post_id=recent.id)}}"><ul class="list-group">
             <li class="list-group-item list-group-item list-group-item-action mb-2 " style="color: #16697A;"><i class="fa fa-file float-left" style="color: #16697A;"> </i> <br> {{recent.title|capitalize}} <br>
               <h6 style="color: grey; float:right;">   {{recent.posted.strftime('%d %B, %Y')}}</h6>
             </li>
-          </ul>
+          </ul></a>
           {%endfor%}
         </div>
         

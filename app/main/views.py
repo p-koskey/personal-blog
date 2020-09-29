@@ -20,16 +20,21 @@ def index(page):
     recent = Post.query.order_by(desc(Post.posted)).limit(3).all()
 
     if subscribe_form.validate_on_submit():
-        semail = subscribe_form.email.data
-        new_email = Subscribers(email = semail)
+        
+        if Subscribers.query.filter_by(email =subscribe_form.email.data).first():
+            flash ('There is an account with that email', 'danger')
+        else:
+            
+            semail = subscribe_form.email.data
+            new_email = Subscribers(email = semail)
 
-        new_email.save_email()
+            new_email.save_email()
 
-        msg = Message(subject="Tech Blog Subscriber", sender="testingemailpk6@gmail.com", recipients=[semail])
-        msg.body = f"Hello, Thank you for subscribing to Tech blog, welcome to the family. You will be notified of new posts on the site. Please enjoy."
-        mail.send(msg)
-        flash("Subscribed sucessfully")
-        return redirect(request.referrer)
+            msg = Message(subject="Tech Blog Subscriber", sender="testingemailpk6@gmail.com", recipients=[semail])
+            msg.body = f"Hello, Thank you for subscribing to Tech blog, welcome to the family. You will be notified of new posts on the site. Please enjoy."
+            mail.send(msg)
+            flash("Subscribed sucessfully","success")
+            return redirect(request.referrer)
     return render_template('index.html', subscribe_form=subscribe_form, posts=posts, quote =quote, recent=recent)
 
 @main.route('/user/<uname>')
@@ -86,9 +91,9 @@ def new_post():
         new_post.save_post()
 
         msg = Message(subject="New Post Alert", sender="testingemailpk6@gmail.com", recipients=emails)
-        msg.body = f"Hello, Check out this new post - " + post_title 
+        msg.body = f"Hello, Visit the website to check out this new post \n " + post_title.capitalize() + " by " + current_user.username.capitalize()
         mail.send(msg)
-        flash("Subscribed sucessfully")
+        
         return redirect(url_for('.index' ))
 
     title = 'New Post'
@@ -100,7 +105,7 @@ def delete_post(post_id):
     post = Post.query.filter_by(id=post_id).first_or_404()
     db.session.delete(post)
     db.session.commit()
-    #flash('Page was deleted successfully', 'success')
+    
     return redirect(request.referrer)
 
 @main.route('/post/update/<int:post_id>/',methods=['GET', 'POST'])
@@ -112,7 +117,7 @@ def update_post(post_id):
         post.title = form.post_title.data
         post.content = form.post_content.data
         db.session.commit()
-        flash('Post updated successfully!')
+       
         return redirect (url_for('.index') )
 
     else:

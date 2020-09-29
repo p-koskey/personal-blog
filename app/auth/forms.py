@@ -10,9 +10,10 @@ from ..models import User
 class RegistrationForm(FlaskForm):
     email = StringField('Your Email Address:',validators=[Required(),Email()])
     username = StringField('Enter your username:',validators = [Required()])
-    password = PasswordField('Password:',validators = [Required(), EqualTo('password_confirm')])
+    password = PasswordField('Password:',validators = [Required(), EqualTo('password_confirm', message='Passwords must match')])
     password_confirm = PasswordField('Confirm Password:',validators = [Required()])
     submit = SubmitField('Sign Up')
+
 
     def validate_email(self,data_field):
             if User.query.filter_by(email =data_field.data).first():
@@ -22,11 +23,7 @@ class RegistrationForm(FlaskForm):
         if User.query.filter_by(username = data_field.data).first():
             flash('That username is taken', 'danger')
 
-    def validate_password(self,pass1=password,pass2=password_confirm):
-        if pass1 is pass2:
-            pass
-        else:
-            flash('Passwords must match','danger')
+    
 
 class LoginForm(FlaskForm):
     email = StringField('Your Email Address:',validators=[Required(),Email()])
